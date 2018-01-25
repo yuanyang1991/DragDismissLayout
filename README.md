@@ -30,7 +30,11 @@ pullDownLayout.setTargetData(x,y,width,height);
 
 ### 怎么实现的
 1.通过onInterceptTouchEvent判断拦截触摸事件，有的浏览大图控件有自己的交互，比如PhotoView
+
 2.通过onTouchEvent消费事件。处理上滑下滑，临界点判断逻辑。
+
 3.其实就是上面两点。还有就是通过Activity获DecorView,然后通过DecorView获取contentView，作为DragDissmissLayout的子布局，实现自己的滑动逻辑。
+
 4.还有就是scroller的使用
+
 5.具体见代码
