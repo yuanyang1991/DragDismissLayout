@@ -12,11 +12,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.Scroller;
 
@@ -137,11 +139,12 @@ public class DragDismissLayout extends FrameLayout {
             case MotionEvent.ACTION_DOWN:
                 actionDownY = (int) ev.getRawY();
                 actionDownX = (int) ev.getRawX();
+                lastY = 0;
                 return false;
             case MotionEvent.ACTION_MOVE:
                 int yDistance = (int) (ev.getRawY() - actionDownY);
                 int xDistance = (int) (ev.getRawX() - actionDownX);
-                if (Math.abs(yDistance) > Math.abs(xDistance) && Math.abs(yDistance)>touchSlop){
+                if (Math.abs(yDistance) > Math.abs(xDistance) && Math.abs(yDistance)>touchSlop/2){
                     return true;//事件拦截判断
                 }
                 break;
@@ -197,6 +200,7 @@ public class DragDismissLayout extends FrameLayout {
         AnimatorSet set = new AnimatorSet();
         set.playTogether(scaleX,scaleY,translationX,translationY);
         set.setDuration(animDuration);
+        set.setInterpolator(new LinearInterpolator());
 
         set.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -227,6 +231,7 @@ public class DragDismissLayout extends FrameLayout {
     public void computeScroll() {
         super.computeScroll();
         if (scroller.computeScrollOffset()) {
+            Log.i("computeScroll","lastY:"+lastY);
             int currentY = scroller.getCurrY();
             int dis = currentY - lastY;
             mContentView.offsetTopAndBottom(dis);
@@ -237,6 +242,7 @@ public class DragDismissLayout extends FrameLayout {
     }
 
     private float computeAlpha(int h,int s) {
+        //防止top< 0导致透明度反转
         if (s<0){
             return 1.0f;
         }
