@@ -186,8 +186,8 @@ public class DragDismissLayout extends FrameLayout {
     private void dismiss() {
         colorDrawable.setAlpha(0);
 
-        mContentView.setPivotX(0);
-        mContentView.setPivotY(0);
+        mContentView.setPivotX(0.5f);
+        mContentView.setPivotY(0.5f);
         ObjectAnimator scaleX = ObjectAnimator.ofFloat(mContentView,View.SCALE_X,1.0f,1.0f* width /mContentView.getMeasuredWidth());
         ObjectAnimator scaleY = ObjectAnimator.ofFloat(mContentView,View.SCALE_Y,1.0f,1.0f* height /mContentView.getMeasuredHeight());
 
@@ -237,6 +237,9 @@ public class DragDismissLayout extends FrameLayout {
     }
 
     private float computeAlpha(int h,int s) {
+        if (s<0){
+            return 1.0f;
+        }
         if (s > h){
             s = h;
         }
