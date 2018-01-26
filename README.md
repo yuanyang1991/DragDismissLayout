@@ -25,8 +25,9 @@ allprojects {
 ```
 compile 'com.github.yuanyang1991:DragDismissLayout:1.0.2'
 ```
-[![Release](https://jitpack.io/v/yuanyang1991/Repo.svg)]
-(https://jitpack.io/#yuanyang1991/Repo)
+[![Release](https://jitpack.io/v/yuanyang1991/DragDismissLayout.svg)]
+(https://jitpack.io/#yuanyang1991/DragDismissLayout)
+
 
 ### 使用
 在Activity的onCreate方法中第一行加入如下代码：
