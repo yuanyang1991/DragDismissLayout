@@ -25,8 +25,9 @@ allprojects {
 ```
 compile 'com.github.yuanyang1991:DragDismissLayout:1.0.2'
 ```
-[![Release](https://jitpack.io/v/yuanyang1991/DragDismissLayout.svg)]
-(https://jitpack.io/#yuanyang1991/DragDismissLayout)
+
+
+
 
 
 ### 使用
@@ -74,3 +75,5 @@ pullDownLayout.setTargetData(x,y,width,height);
 5. 具体见代码
 
 
+
+[![Release](https://jitpack.io/v/yuanyang1991/DragDismissLayout.svg)](https://jitpack.io/#yuanyang1991/DragDismissLayout)
