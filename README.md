@@ -8,6 +8,12 @@
 
 ## 使用以及介绍
 
+### 添加依赖
+1. 在项目级gradle文件中添加 maven { url "https://jitpack.io" }
+2. 在app级gradle文件添加  compile 'com.github.yuanyang1991:DragDissmissLayout:1.0.0'
+3. 点击 sync
+
+
 ### 初始化
 在Activity的onCreate方法中第一行加入如下代码：
 ```
