@@ -1,4 +1,5 @@
-# DragDissmissLayout
+# DragDismissLayout
+
 ## 这是啥
 
 仿微信朋友圈浏览大图下拉返回交互。
@@ -9,13 +10,23 @@
 
 ## 使用以及介绍
 
-### 添加依赖
-1. 在项目级gradle文件中添加 maven { url "https://jitpack.io" }
-2. 在app级gradle文件添加  compile 'com.github.yuanyang1991:DragDismissLayout:1.0.1'
-3. 点击 sync
+### 依赖
+在项目级的build.gradle下面添加：
+```
+allprojects {
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
+}
 
+```
 
-### 初始化
+然后在module级的build.gradle下面添加：
+```
+compile 'com.github.yuanyang1991:DragDismissLayout:1.0.2'
+```
+
+### 使用
 在Activity的onCreate方法中第一行加入如下代码：
 ```
         DragDismissLayout pullDownLayout = new DragDismissLayout(this);
@@ -23,7 +34,6 @@
 
 ```
 
-### 设置参数
 DragDismissLayout需要知道前一个页面ImageView的x,y坐标，以及长和宽
 ```
 //获取目标View的绝对坐标以及长宽
@@ -49,7 +59,7 @@ pullDownLayout.setTargetData(x,y,width,height);
 ```
 
 
-### 怎么实现的
+### 原理
 1. 通过onInterceptTouchEvent判断拦截触摸事件，有的浏览大图控件有自己的交互，比如PhotoView
 
 2. 通过onTouchEvent消费事件。处理上滑下滑，临界点判断逻辑。
@@ -60,5 +70,3 @@ pullDownLayout.setTargetData(x,y,width,height);
 
 5. 具体见代码
 
-### 缺点
-1 还没实现View随着拖动大小同步改变，但是基本不影响使用
