@@ -3,11 +3,16 @@ package com.example.yuanyang.dragdismisslayout;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.example.lib.Location;
+import com.example.lib.LocationUtil;
 
 import java.lang.reflect.TypeVariable;
 
@@ -31,24 +36,24 @@ public class MainActivity extends AppCompatActivity {
         final ImageView iv2 = findViewById(R.id.iv2);
         final ImageView iv3 = findViewById(R.id.iv3);
 
-        iv1.setOnClickListener(new View.OnClickListener() {
+        iv1.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                ImageDisplayActivity.show((int)iv1.getX(),(int)iv1.getY(),dp2px(100),dp2px(200),imgs[0],MainActivity.this);
+                ImageDisplayActivity.show(iv1,imgs[0],MainActivity.this);
             }
         });
 
-        iv2.setOnClickListener(new View.OnClickListener() {
+        iv2.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                ImageDisplayActivity.show((int)iv2.getX(),(int)iv2.getY(),dp2px(200),dp2px(200),imgs[1],MainActivity.this);
+                ImageDisplayActivity.show(iv2,imgs[1],MainActivity.this);
             }
         });
 
-        iv3.setOnClickListener(new View.OnClickListener() {
+        iv3.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                ImageDisplayActivity.show((int)iv3.getX(),(int)iv3.getY(),dp2px(200),dp2px(100),imgs[2],MainActivity.this);
+                ImageDisplayActivity.show(iv3,imgs[2],MainActivity.this);
             }
         });
         Glide.with(this).load(Uri.parse(imgs[0])).into(iv1);
@@ -56,7 +61,4 @@ public class MainActivity extends AppCompatActivity {
         Glide.with(this).load(Uri.parse(imgs[2])).into(iv3);
     }
 
-    private int dp2px(int value){
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,value,getResources().getDisplayMetrics());
-    }
 }

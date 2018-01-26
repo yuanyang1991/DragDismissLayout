@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -189,10 +190,11 @@ public class DragDismissLayout extends FrameLayout {
     private void dismiss() {
         colorDrawable.setAlpha(0);
 
-        mContentView.setPivotX(0.5f);
-        mContentView.setPivotY(0.5f);
         ObjectAnimator scaleX = ObjectAnimator.ofFloat(mContentView,View.SCALE_X,1.0f,1.0f* width /mContentView.getMeasuredWidth());
         ObjectAnimator scaleY = ObjectAnimator.ofFloat(mContentView,View.SCALE_Y,1.0f,1.0f* height /mContentView.getMeasuredHeight());
+
+        mContentView.setPivotX(0);
+        mContentView.setPivotY(0);
 
         ObjectAnimator translationX = ObjectAnimator.ofFloat(mContentView,View.TRANSLATION_X,mContentView.getX(), x -mContentView.getX());
         ObjectAnimator translationY = ObjectAnimator.ofFloat(mContentView,View.TRANSLATION_Y,mContentView.getY(), y -mContentView.getY());
@@ -231,7 +233,6 @@ public class DragDismissLayout extends FrameLayout {
     public void computeScroll() {
         super.computeScroll();
         if (scroller.computeScrollOffset()) {
-            Log.i("computeScroll","lastY:"+lastY);
             int currentY = scroller.getCurrY();
             int dis = currentY - lastY;
             mContentView.offsetTopAndBottom(dis);
