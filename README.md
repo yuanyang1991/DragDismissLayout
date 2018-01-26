@@ -4,13 +4,14 @@
 仿微信朋友圈浏览大图下拉返回交互。
 
 看到这个功能的时候，第一感觉就是比较人性化，简化了大屏手机关闭浏览页的操作，防止大屏手机上面的误操作。github上面还没搜到相关的库，就自己造了个轮子。效果如下:
+
 ![image](https://github.com/yuanyang1991/DragDissmissLayout/blob/master/wechat_image.gif)
 
 ## 使用以及介绍
 
 ### 添加依赖
 1. 在项目级gradle文件中添加 maven { url "https://jitpack.io" }
-2. 在app级gradle文件添加  compile 'com.github.yuanyang1991:DragDissmissLayout:1.0.1'
+2. 在app级gradle文件添加  compile 'com.github.yuanyang1991:DragDismissLayout:1.0.1'
 3. 点击 sync
 
 
