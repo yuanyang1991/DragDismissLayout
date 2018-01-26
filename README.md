@@ -70,3 +70,6 @@ pullDownLayout.setTargetData(x,y,width,height);
 
 5. 具体见代码
 
+[![Release](https://jitpack.io/v/User/Repo.svg)]
+(https://jitpack.io/#User/Repo)
+
