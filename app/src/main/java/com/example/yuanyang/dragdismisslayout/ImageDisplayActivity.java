@@ -1,5 +1,6 @@
 package com.example.yuanyang.dragdismisslayout;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +30,10 @@ public class ImageDisplayActivity extends AppCompatActivity {
         intent.putExtra("width",width);
         intent.putExtra("height",height);
         context.startActivity(intent);
+        if (context instanceof Activity){
+            Activity activity = (Activity) context;
+            activity.overridePendingTransition(R.anim.image_display_enter,0);
+        }
     }
 
     @Override
