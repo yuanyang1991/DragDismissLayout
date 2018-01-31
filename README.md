@@ -31,16 +31,28 @@ compile 'com.github.yuanyang1991:DragDismissLayout:1.0.2'
 
 
 ### 使用
-在Activity的onCreate方法中第一行加入如下代码：
+在布局文件
 ```
-        DragDismissLayout pullDownLayout = new DragDismissLayout(this);
-        pullDownLayout.attachTo(this);
+<?xml version="1.0" encoding="utf-8"?>
+<com.example.lib.DragDismissLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dragLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.yuanyang.dragdismisslayout.ImageDisplayActivity">
+
+    <OtherView
+        android:id="@+id/photoView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</com.example.lib.DragDismissLayout>
 
 ```
 
 DragDismissLayout需要知道前一个页面ImageView的x,y坐标，以及长和宽
 ```
-//获取目标View的绝对坐标以及长宽
+//通过LocationUtil.getRawLocation获取目标View的绝对坐标以及长宽
     public static void show(View view,String imageUrl ,Context context){
         Location location = LocationUtil.getRawLocation(view);
         show(location.x,location.y,view.getMeasuredWidth(),view.getMeasuredHeight(),imageUrl,context);
