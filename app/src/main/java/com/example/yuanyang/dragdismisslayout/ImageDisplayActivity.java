@@ -38,16 +38,16 @@ public class ImageDisplayActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        DragDismissLayout pullDownLayout = new DragDismissLayout(this);
-        pullDownLayout.attachTo(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_display);
+        DragDismissLayout pullDownLayout = findViewById(R.id.dragLayout);
         PhotoView photoView = findViewById(R.id.photoView);
         int x =getIntent().getIntExtra("x",-1);
         int y =getIntent().getIntExtra("y",-1);
         int width = getIntent().getIntExtra("width",-1);
         int height = getIntent().getIntExtra("height",-1);
         String url = getIntent().getStringExtra("url");
+
         Glide.with(this).load(url).into(photoView);
         pullDownLayout.setTargetData(x,y,width,height);
     }

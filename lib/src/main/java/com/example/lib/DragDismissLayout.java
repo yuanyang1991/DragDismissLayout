@@ -18,7 +18,6 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
-import android.widget.FrameLayout;
 import android.widget.Scroller;
 
 
@@ -29,7 +28,7 @@ import android.widget.Scroller;
  * @date 2018/1/24 13:49
  */
 
-public class DragDismissLayout extends FrameLayout {
+public class DragDismissLayout extends ViewGroup {
 
     /**
      * 透明度最大值
@@ -54,12 +53,12 @@ public class DragDismissLayout extends FrameLayout {
     /**
      * 附着的Activity
      */
-    private Activity mActivity;
+    private Activity activity;
 
     /**
      * Activity的真实子布局
      */
-    private View mContentView;
+    private View contentView;
 
     /**
      * action_down事件的纵坐标
@@ -152,6 +151,36 @@ public class DragDismissLayout extends FrameLayout {
         colorDrawable = new ColorDrawable(Color.parseColor("#000000"));
         setBackgroundDrawable(colorDrawable);
         halfWindowHeight = windowHeight/2;
+        Context context = getContext();
+        if (context instanceof Activity){
+            activity = (Activity) context;
+        }
+        setFitsSystemWindows(true);//屏幕兼容
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        int childCount = getChildCount();
+        if (childCount!=1){
+            throw new IllegalStateException("DragDismissLayout must have one child!!");
+        }
+        contentView =  getChildAt(0);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        if (contentView == null) return;
+        contentView.measure(widthMeasureSpec,heightMeasureSpec);//no padding
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        if (contentView == null) return;
+        int currentTop = contentView.getTop();
+        int currentLeft = contentView.getLeft();
+        contentView.layout(currentLeft,currentTop,currentLeft+contentView.getMeasuredWidth(),currentTop+contentView.getMeasuredHeight());
     }
 
     @Override
@@ -188,21 +217,21 @@ public class DragDismissLayout extends FrameLayout {
                 final int currentX = (int) event.getRawX();
                 final int yDistance = currentY - actionDownY;
                 final int xDistance = currentX - actionDownX;
-                int currentTop = mContentView.getTop();
+                int currentTop = contentView.getTop();
                 if (yDistance <0&&currentTop<=0){
                     //顶点处不可向上滑动
                     return super.onTouchEvent(event);
                 }
-                mContentView.offsetLeftAndRight((int) (xDistance*resistance));
-                mContentView.offsetTopAndBottom((int) (yDistance*resistance));//使用offsetTopAndBottom产生滑动
+                contentView.offsetLeftAndRight((int) (xDistance*resistance));
+                contentView.offsetTopAndBottom((int) (yDistance*resistance));//使用offsetTopAndBottom产生滑动
                 doScale(currentTop);
                 colorDrawable.setAlpha(computeAlpha(currentTop));
                 actionDownY = currentY;
                 actionDownX = currentX;
                 break;
             case MotionEvent.ACTION_UP:
-                int top =  mContentView.getTop();
-                int left = mContentView.getLeft();
+                int top =  contentView.getTop();
+                int left = contentView.getLeft();
                 //到达临界值，开始执行关闭动画
                 if (top >= windowHeight* dragRatio){
                     dismiss();
@@ -218,21 +247,21 @@ public class DragDismissLayout extends FrameLayout {
 
    private void doScale(int currentTop){
        final float scale = 1.0f*(windowHeight-currentTop)/windowHeight;
-       mContentView.setScaleX(scale);
-       mContentView.setScaleY(scale);
+       contentView.setScaleX(scale);
+       contentView.setScaleY(scale);
    }
 
     private void dismiss() {
         colorDrawable.setAlpha(0);
 
-        ObjectAnimator scaleX = ObjectAnimator.ofFloat(mContentView,View.SCALE_X,1.0f,1.0f* width /mContentView.getMeasuredWidth());
-        ObjectAnimator scaleY = ObjectAnimator.ofFloat(mContentView,View.SCALE_Y,1.0f,1.0f* height /mContentView.getMeasuredHeight());
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(contentView,View.SCALE_X,1.0f,1.0f* width / contentView.getMeasuredWidth());
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(contentView,View.SCALE_Y,1.0f,1.0f* height / contentView.getMeasuredHeight());
 
-        mContentView.setPivotX(0);
-        mContentView.setPivotY(0);
+        contentView.setPivotX(0);
+        contentView.setPivotY(0);
 
-        ObjectAnimator translationX = ObjectAnimator.ofFloat(mContentView,View.TRANSLATION_X,mContentView.getX(), x -mContentView.getX());
-        ObjectAnimator translationY = ObjectAnimator.ofFloat(mContentView,View.TRANSLATION_Y,mContentView.getY(), y -mContentView.getY());
+        ObjectAnimator translationX = ObjectAnimator.ofFloat(contentView,View.TRANSLATION_X, contentView.getX(), x - contentView.getX());
+        ObjectAnimator translationY = ObjectAnimator.ofFloat(contentView,View.TRANSLATION_Y, contentView.getY(), y - contentView.getY());
 
         AnimatorSet set = new AnimatorSet();
         set.playTogether(scaleX,scaleY,translationX,translationY);
@@ -243,9 +272,9 @@ public class DragDismissLayout extends FrameLayout {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                if (mActivity!=null&&!mActivity.isFinishing()){
-                    mActivity.finish();
-                    mActivity.overridePendingTransition(0,0);
+                if (activity !=null&&!activity.isFinishing()){
+                    activity.finish();
+                    activity.overridePendingTransition(0,0);
                 }
             }
         });
@@ -256,12 +285,12 @@ public class DragDismissLayout extends FrameLayout {
         if (activity == null) {
             return;
         }
-        mActivity = activity;
+        this.activity = activity;
         ViewGroup decorView = (ViewGroup) activity.getWindow().getDecorView();
-        mContentView = decorView.getChildAt(0);
-        decorView.removeView(mContentView);
+        contentView = decorView.getChildAt(0);
+        decorView.removeView(contentView);
         decorView.addView(this);
-        addView(mContentView,new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        addView(contentView,new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
     }
 
     @Override
@@ -272,9 +301,9 @@ public class DragDismissLayout extends FrameLayout {
             int currentX = scroller.getCurrX();
             int yDis = currentY - lastY;
             int xDis = currentX - lastX;
-            mContentView.offsetTopAndBottom(yDis);
-            mContentView.offsetLeftAndRight(xDis);
-            final int top = mContentView.getTop();
+            contentView.offsetTopAndBottom(yDis);
+            contentView.offsetLeftAndRight(xDis);
+            final int top = contentView.getTop();
             doScale(top);
             colorDrawable.setAlpha(computeAlpha(top));
             lastY = currentY;
