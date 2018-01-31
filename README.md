@@ -21,10 +21,13 @@ allprojects {
 
 ```
 
+最新版本：[![Release](https://jitpack.io/v/yuanyang1991/DragDismissLayout.svg)](https://jitpack.io/#yuanyang1991/DragDismissLayout)
+
 然后在module级的build.gradle下面添加：
 ```
-compile 'com.github.yuanyang1991:DragDismissLayout:1.0.2'
+compile 'com.github.yuanyang1991:DragDismissLayout:最新版本'
 ```
+
 
 
 
@@ -88,4 +91,3 @@ pullDownLayout.setTargetData(x,y,width,height);
 
 
 
-[![Release](https://jitpack.io/v/yuanyang1991/DragDismissLayout.svg)](https://jitpack.io/#yuanyang1991/DragDismissLayout)
