@@ -94,6 +94,11 @@ pullDownLayout.setTargetData(x,y,width,height);
 ```
 
 
+### 已知问题
+1. 透明背景会造成Activity生命周期的调用顺序发生改变，可能由此导致一些问题，目前发现在透明主题的页面使用QQ分享会发生UI问题。其他分享暂无。
+
+
+
 ### 原理
 1. 通过onInterceptTouchEvent判断拦截触摸事件，有的浏览大图控件有自己的交互，比如PhotoView
 
