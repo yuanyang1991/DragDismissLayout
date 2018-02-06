@@ -34,6 +34,22 @@ compile 'com.github.yuanyang1991:DragDismissLayout:最新版本'
 
 
 ### 使用
+
+设置Activity的主题位透明模式：(一般设置位全屏模式)
+
+```
+
+ <style name="AppTheme.FullScreen" parent="@style/Theme.AppCompat.NoActionBar">
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <item name="android:windowIsTranslucent">true</item>
+    <item name="android:windowContentOverlay">@null</item>
+    <item name="colorPrimary">@color/fm_toolbar_color</item>
+    <item name="colorPrimaryDark">@color/fm_statusbar_color</item>
+  </style>
+
+```
+
+
 在布局文件
 ```
 <?xml version="1.0" encoding="utf-8"?>
